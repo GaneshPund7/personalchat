@@ -87,7 +87,7 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:3000/sign-up/login", { email, password });
+      const response = await axios.post("https://socketchatnode-1.onrender.com/sign-up/login", { email, password });
       
       // Store user email
       localStorage.setItem("loggedInUser", JSON.stringify({ email }));
@@ -154,7 +154,7 @@ const Login = () => {
   <GoogleLogin
   onSuccess={credentialResponse => {
     axios.post(
-      'http://localhost:3000/api/auth/googleSign',
+      'https://socketchatnode-1.onrender.com/api/auth/googleSign',
       { token: credentialResponse.credential }, 
       
     )

@@ -3,7 +3,7 @@ import { io } from 'socket.io-client';
 import { jwtDecode } from 'jwt-decode';
 // import ChatWindow from '../utils/chatCard';
 
-const socket = io('http://localhost:3000');
+const socket = io('https://socketchatnode-1.onrender.com');
 
 function Msg() {
   const [messages, setMessages] = useState([]);

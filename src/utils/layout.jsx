@@ -54,7 +54,7 @@ const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
   //   if (!userId) return;
   //   try {
   //     const response = await axios.get(
-  //       `http://localhost:3000/api/conversation?userId=${userId}`,
+  //       `https://socketchatnode-1.onrender.com/api/conversation?userId=${userId}`,
   //       {
   //         headers: { Authorization: `Bearer ${token}` },
   //       }
@@ -69,7 +69,7 @@ const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
 
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/conversation?userId=${loggedInUser.id}`,
+        `https://socketchatnode-1.onrender.com/api/conversation?userId=${loggedInUser.id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -92,7 +92,7 @@ const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
 
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/user/search?search=${searchQuery}`,
+        `https://socketchatnode-1.onrender.com/api/user/search?search=${searchQuery}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setSearchResults(response.data.data || []);
@@ -106,7 +106,7 @@ const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
     try {
       const loggedInUser = currentUser;
       await axios.post(
-        `http://localhost:3000/api/conversation`,
+        `https://socketchatnode-1.onrender.com/api/conversation`,
         {
           type: 'private',
           userTo: userToId,
@@ -172,9 +172,10 @@ const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
                     placeholder="Search users"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
+                    className='shadow-sm'
                   />
                 </Form.Group>
-                <Button variant="primary" type="submit" className="mt-2 w-100">
+                <Button variant="primary" type="submit" className="mt-2 w-100 shadow-sm">
                   Search
                 </Button>
               </Form>
@@ -199,7 +200,7 @@ const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
                 </>
               ) : (
                 <>
-                  <h6 className="mt-4">Conversations</h6>
+                  <h6 className="mt-4">Conversations: </h6>
                    {conversations.length > 0 ? (
         
         <ul className="list-group">    
@@ -226,7 +227,7 @@ const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
       marginRight: '8px',
     }}
   />
-              <span className=""><strong>{otherUser.name}</strong></span>
+              <span className="me-3"><strong>{otherUser.name}</strong></span>
               {/* <Button
                 size="sm"
                 variant="info" */}

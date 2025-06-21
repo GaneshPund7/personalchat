@@ -8,6 +8,8 @@ import PrivateChat from './componants/privateChat/PrivateChat';
 import Register from './componants/Register';
 import Login from './componants/login';
 import Message from './componants/message';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+
 // import Login from './componants/auth/login';
 
 function App() {

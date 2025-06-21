@@ -155,7 +155,7 @@ import { io } from 'socket.io-client';
 import { useParams } from 'react-router-dom';
 // import ChatWindow from '../../components/ChatWindow'; // adjust path as per your project
 
-const socket = io('http://localhost:3000'); // Connect socket
+const socket = io('https://socketchatnode-1.onrender.com'); // Connect socket
 
 function PrivateChat() {
   const { conversationId } = useParams();
