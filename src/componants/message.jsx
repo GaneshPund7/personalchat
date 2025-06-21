@@ -15,8 +15,19 @@ function Message() {
   const messageRef = useRef(null);
   const messagesEndRef = useRef(null);  
   const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
-
- 
+const messageTimeAndDate = messages.map((x) => x.createdAt)
+console.log(messageTimeAndDate)
+ const formattedDate = new Date(messageTimeAndDate).toLocaleString('en-IN', {
+  timeZone: 'Asia/Kolkata',
+  hour12: true,
+  year: 'numeric',
+  month: 'short',   // or 'numeric' or 'long'
+  day: 'numeric',
+  hour: 'numeric',
+  minute: 'numeric',
+  second: 'numeric'
+});
+console.log(formattedDate)
 useEffect(() => {
   if (!conversationId) return;
 
@@ -24,7 +35,7 @@ useEffect(() => {
   socket.emit('join', { conversationId, userName: loggedInUser.name });
 
   // Fetch messages
-  fetch(`http://178.18.241.165:6013/api/message/${conversationId}`)
+  fetch(`http://localhost:3000/api/message/${conversationId}`)
     .then(res => res.json())
     .then(result => {
       const messagesFetched = Array.isArray(result.data) ? result.data : [];
@@ -80,7 +91,7 @@ useEffect(() => {
 
     // Save to DB via API
     try {
-      await fetch('http://178.18.241.165:6013/api/message', {
+      await fetch('http://localhost:3000/api/message', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -100,8 +111,11 @@ useEffect(() => {
   return (
     <div>
 <Container className="" style={{ maxWidth: '1000px' }}>
-  <Card className="shadow-sm mt-5">
- <Card.Header className="text-white bg-primary">
+  <Card className="shadow-sm mt-5 border-0">
+ <Card.Header
+  className="text-dark shadow-sm border-0"
+  style={{ backgroundColor: 'rgba(179, 206, 246, 0.2)' }}
+>
  
  <h5> <span>{receiverName}</span></h5>
 </Card.Header>
@@ -113,39 +127,49 @@ useEffect(() => {
             No messages yet — start the conversation!
           </div>
         ) : (
-          messages.map((msg, idx) => {
-            const isSentByCurrentUser =
-              msg.createdBy?.email === loggedInUser.email ||
-              msg.createdBy?.name === loggedInUser.name;
-   
-            return (
-              <ListGroup.Item
-                key={idx}
-                
-                className={`d-flex flex-column border-0 ${
-                  isSentByCurrentUser
-                    ? 'align-items-end text-end'
-                    : 'align-items-start text-start'
-                }`}
-              >
-                {/* <span>{otherUser || ganesh}</span> */}
-                <small className="fw-bold">
-                  {(msg.createdBy?.email || msg.createdBy?.name || 'Unknown').split('@')[0]}
-                </small>
-                <Card className="shadow-sm p-2">
-                  <span
-                    className={`px-3 py-2 mt-1 rounded-3 ${
-                      isSentByCurrentUser
-                        ? 'bg-secondary text-white'
-                        : 'bg-light text-dark'
-                    }`}
-                  >
-                    {msg.content || msg.message}
-                  </span>
-                </Card>
-              </ListGroup.Item>
-            );
-          })
+        messages.map((msg, idx) => {
+  const isSentByCurrentUser =
+    msg.createdBy?.email === loggedInUser.email ||
+    msg.createdBy?.name === loggedInUser.name;
+
+  return (
+    <ListGroup.Item
+      key={idx}
+      className={`d-flex flex-column border-0 ${
+        isSentByCurrentUser ? 'align-items-end text-end' : 'align-items-start text-start'
+      }`}
+    >
+      <small className="text-muted">
+        {/* Show only this message's createdAt formatted */}
+        {new Date(msg.createdAt).toLocaleString('en-IN', {
+          timeZone: 'Asia/Kolkata',
+          hour12: true,
+        //   year: 'numeric',
+        //   month: 'short',
+        //   day: 'numeric',
+          hour: 'numeric',
+          minute: 'numeric',
+        })}  
+      </small>
+        {/* <span class="fw-bold">{(msg.createdBy?.email || msg.createdBy?.name || 'Unknown').split('@')[0]}</span> */}
+
+      {/* <Card className="shadow-sm p-1 bg-ht border-0 "> */}
+    <span
+  className={`  mt-1 rounded-3 border-0 shadow-sm p-3 ${
+    isSentByCurrentUser ? '' : 'bg-light text-dark'
+  }`}
+  style={
+    isSentByCurrentUser
+      ? { backgroundColor: 'rgba(133, 221, 250, 0.2)', padding: '4px' }
+      : undefined
+  }
+>
+          {msg.content || msg.message}
+        </span>
+      {/* </Card> */}
+    </ListGroup.Item>
+  );
+})
         )}
         <div ref={messagesEndRef}></div>
       </ListGroup>

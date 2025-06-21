@@ -69,7 +69,7 @@ const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
 
     try {
       const response = await axios.get(
-        `http://178.18.241.165:6013/api/conversation?userId=${loggedInUser.id}`,
+        `http://localhost:3000/api/conversation?userId=${loggedInUser.id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -92,7 +92,7 @@ const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
 
     try {
       const response = await axios.get(
-        `http://178.18.241.165:6013/api/user/search?search=${searchQuery}`,
+        `http://localhost:3000/api/user/search?search=${searchQuery}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setSearchResults(response.data.data || []);
@@ -106,22 +106,21 @@ const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
     try {
       const loggedInUser = currentUser;
       await axios.post(
-        `http://178.18.241.165:6013/api/conversation`,
+        `http://localhost:3000/api/conversation`,
         {
           type: 'private',
-                  userBy: loggedInUser.id,
           userTo: userToId,
         },
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      alert('Conversation created successfully!');
+      // alert('Conversation created successfully!');
       setSearchResults([]);
       fetchConversations(loggedInUser.id);
     } catch (err) {
       console.error(err);
-      alert('Failed to start conversation');
+      // alert('Failed to start conversation');
     }
   };
 
@@ -207,19 +206,33 @@ const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
             <ListGroup className="mb-4">
         {conversations.map((conv) => {
           const otherUser = conv.userBy._id === loggedInUser.id ? conv.userTo : conv.userBy;
-
+ console.log("avtar urls",otherUser.avatarUrl)
           return (
             <ListGroup.Item
               key={conv._id}
-              className="d-flex justify-content-between align-items-center"
+              className="d-flex justify-content-between align-items-center border-0 shadow-sm"
+              onClick={() => navigate(`chat/${conv._id}`)}
+              href="" 
             >
-              <span><strong>{otherUser.name}</strong></span>
-              <Button
+               <img
+    src={otherUser.avatarUrl || otherUser.avatar} 
+
+    alt={`${otherUser.name}`}
+    style={{
+      width: '30px',
+      height: '30px',
+      borderRadius: '50%',
+      objectFit: 'cover',
+      marginRight: '8px',
+    }}
+  />
+              <span className=""><strong>{otherUser.name}</strong></span>
+              {/* <Button
                 size="sm"
-                variant="info"
-                 onClick={() => navigate(`chat/${conv._id}`)}>
-                 Chat
-              </Button>
+                variant="info" */}
+                 {/* > */}
+                 {/* Chat
+              </Button> */}
             </ListGroup.Item>
           );
         })}
