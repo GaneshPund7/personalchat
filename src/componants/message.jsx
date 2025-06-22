@@ -98,94 +98,169 @@ function Message() {
   };
 
   return (
-    <Container style={{ maxWidth: '1000px' }}>
-      <Card className="shadow-sm mt-5 border-0">
-        <Card.Header
-          className="text-dark shadow-sm border-0"
-          style={{ backgroundColor: 'rgba(179, 206, 246, 0.2)' }}
-        >
-        <div className="d-flex justify-content-between align-items-center">
-  <h5 className="mb-0">{receiverName}</h5>
+    <Container fluid className="p-0" style={{ height: '100vh' }}>
+  <Card className="border-0 shadow-sm w-100 h-100 rounded-0">
+    <Card.Header
+      className="text-dark shadow-sm border-0"
+      style={{ backgroundColor: 'rgba(179, 206, 246, 0.2)' }}
+    >
+      <div className="d-flex justify-content-between align-items-center flex-wrap">
+        <h5 className="mb-0">{receiverName}</h5>
+        <div className="d-flex align-items-center gap-3 mt-2 mt-md-0">
+          <i className="fa fa-phone"></i>
+          <i className="fa fa-video-camera"></i>
+          <i className="fa fa-ellipsis-v"></i>
+        </div>
+      </div>
+    </Card.Header>
 
-  <div className='me-5'>
-    <span className='me-3'><i className="fa fa-phone me-3" aria-hidden="true"></i></span>
-    <i className="fa fa-video-camera" aria-hidden="true"></i>
-   <span className='ms-5'>
-     <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-   </span>
-  </div>
-</div>
+    <Card.Body className="d-flex flex-column p-0" style={{ height: 'calc(100vh - 56px)' }}>
+      {/* Messages area */}
+      <div style={{ flex: 1, overflowY: 'auto', padding: '16px' }}>
+        {messages.length === 0 ? (
+          <div className="text-muted text-center mt-5">
+            No messages yet — start the conversation!
+          </div>
+        ) : (
+          messages.map((msg, idx) => {
+            const isSentByCurrentUser =
+              msg.createdBy?.email === loggedInUser.email ||
+              msg.createdBy?.name === loggedInUser.name;
 
-        </Card.Header>
-
-        <Card.Body>
-          <ListGroup style={{ height: '350px', overflowY: 'auto', marginBottom: '15px' }}>
-            {messages.length === 0 ? (
-              <div className="text-muted text-center">
-                No messages yet — start the conversation!
+            return (
+              <div
+                key={idx}
+                className={`mb-2 d-flex flex-column ${
+                  isSentByCurrentUser ? 'align-items-end text-end' : 'align-items-start text-start'
+                }`}
+              >
+                <div className="d-flex align-items-center">
+                  <small className="text-muted">{formatDate(msg.createdAt)}</small>
+                </div>
+                <span
+                  className={`mt-1 rounded-3 border-0 shadow-sm p-3 ${
+                    isSentByCurrentUser ? '' : 'bg-light text-dark'
+                  }`}
+                  style={
+                    isSentByCurrentUser
+                      ? { backgroundColor: 'rgba(133, 221, 250, 0.2)' }
+                      : undefined
+                  }
+                >
+                  {msg.content || msg.message}
+                </span>
               </div>
-            ) : (
-              messages.map((msg, idx) => {
-                const isSentByCurrentUser =
-                  msg.createdBy?.email === loggedInUser.email ||
-                  msg.createdBy?.name === loggedInUser.name;
+            );
+          })
+        )}
+        <div ref={messagesEndRef} />
+      </div>
 
-                return (
-                  <ListGroup.Item
-                    key={idx}
-                    className={`d-flex flex-column border-0 ${
-                      isSentByCurrentUser ? 'align-items-end text-end' : 'align-items-start text-start'
-                    }`}
-                  >
+      {/* Message input area */}
+      <Form onSubmit={handleSend} className="border-top p-2">
+        <InputGroup>
+          <Form.Control
+            type="text"
+            ref={messageRef}
+            placeholder="Type a message"
+            required
+            autoComplete="off"
+          />
+          <Button type="submit">
+            <i className="fa fa-paper-plane" aria-hidden="true"></i>
+          </Button>
+        </InputGroup>
+      </Form>
+    </Card.Body>
+  </Card>
+</Container>
+
+//     <Container style={{ maxWidth: '1000px' }}>
+//       <Card className="shadow-sm mt-5 border-0 w-100">
+//        <Card.Header
+//   className="text-dark shadow-sm border-0"
+//   style={{ backgroundColor: 'rgba(179, 206, 246, 0.2)' }}
+// >
+//   <div className="d-flex justify-content-between align-items-center flex-wrap">
+//     <h5 className="mb-0">{receiverName}</h5>
+
+//     <div className="d-flex align-items-center gap-2 mt-2 mt-md-0">
+//       <i className="fa fa-phone" aria-hidden="true"></i>
+//       <i className="fa fa-video-camera" aria-hidden="true"></i>
+//       <i className="fa fa-ellipsis-v" aria-hidden="true"></i>
+//     </div>
+//   </div>
+// </Card.Header>
+
+
+//         <Card.Body>
+//           <ListGroup style={{ height: '350px', overflowY: 'auto', marginBottom: '15px' }}>
+//             {messages.length === 0 ? (
+//               <div className="text-muted text-center">
+//                 No messages yet — start the conversation!
+//               </div>
+//             ) : (
+//               messages.map((msg, idx) => {
+//                 const isSentByCurrentUser =
+//                   msg.createdBy?.email === loggedInUser.email ||
+//                   msg.createdBy?.name === loggedInUser.name;
+
+//                 return (
+//                   <ListGroup.Item
+//                     key={idx}
+//                     className={`d-flex flex-column border-0 ${
+//                       isSentByCurrentUser ? 'align-items-end text-end' : 'align-items-start text-start'
+//                     }`}
+//                   >
  
-                  <div className='d-flex'>
-                      <small className="text-muted">{formatDate(msg.createdAt)}</small>
-                     <span className='ms-2'>
-                       {/* <i class="fa fa-ellipsis-v" aria-hidden="true"></i> */}
-                          </span>
-                  </div>
-                    <span
-                      className={`mt-1 rounded-3 border-0 shadow-sm p-3 ${
-                        isSentByCurrentUser ? '' : 'bg-light text-dark'
-                      }`}
-                      style={
-                        isSentByCurrentUser
-                          ? { backgroundColor: 'rgba(133, 221, 250, 0.2)', padding: '4px' }
-                          : undefined
-                      }
-                    >
-                      {msg.content || msg.message}
-                    </span>
-                  </ListGroup.Item>
-                );
-              })
-            )}
-            <div ref={messagesEndRef} />
-          </ListGroup>
+//                   <div className='d-flex'>
+//                       <small className="text-muted">{formatDate(msg.createdAt)}</small>
+//                      <span className='ms-2'>
+//                        {/* <i class="fa fa-ellipsis-v" aria-hidden="true"></i> */}
+//                           </span>
+//                   </div>
+//                     <span
+//                       className={`mt-1 rounded-3 border-0 shadow-sm p-3 ${
+//                         isSentByCurrentUser ? '' : 'bg-light text-dark'
+//                       }`}
+//                       style={
+//                         isSentByCurrentUser
+//                           ? { backgroundColor: 'rgba(133, 221, 250, 0.2)', padding: '4px' }
+//                           : undefined
+//                       }
+//                     >
+//                       {msg.content || msg.message}
+//                     </span>
+//                   </ListGroup.Item>
+//                 );
+//               })
+//             )}
+//             <div ref={messagesEndRef} />
+//           </ListGroup>
 
-          {/* Send message input */}
-          <Form onSubmit={handleSend}>
-            <Form.Group className="d-flex">
-           <InputGroup>
-  <Form.Control
-    type="text"
-    ref={messageRef}
-    placeholder="Type a message"
-    required
-    autoComplete="off"
-  />
-  <InputGroup.Text style={{ background: 'white', borderLeft: '0' }}>
-  </InputGroup.Text>
-</InputGroup>
-              <Button type="submit" className="ms-2">
+//           {/* Send message input */}
+//           <Form onSubmit={handleSend}>
+//             <Form.Group className="d-flex">
+//            <InputGroup>
+//   <Form.Control
+//     type="text"
+//     ref={messageRef}
+//     placeholder="Type a message"
+//     required
+//     autoComplete="off"
+//   />
+//   <InputGroup.Text style={{ background: 'white', borderLeft: '0' }}>
+//   </InputGroup.Text>
+// </InputGroup>
+//               <Button type="submit" className="ms-2">
                 
-              <i class="fa fa-paper-plane" aria-hidden="true"></i>
-              </Button>
-            </Form.Group>
-          </Form>
-        </Card.Body>
-      </Card>
-    </Container>
+//               <i class="fa fa-paper-plane" aria-hidden="true"></i>
+//               </Button>
+//             </Form.Group>
+//           </Form>
+//         </Card.Body>
+//       </Card>
+//     </Container>
   );
 }
 

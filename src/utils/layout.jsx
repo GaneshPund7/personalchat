@@ -50,20 +50,6 @@ const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
 
   const toggleSidebar = () => setShowSidebar(!showSidebar);
 
-  // const fetchConversations = async (userId) => {
-  //   if (!userId) return;
-  //   try {
-  //     const response = await axios.get(
-  //       `https://socketchatnode-1.onrender.com/api/conversation?userId=${userId}`,
-  //       {
-  //         headers: { Authorization: `Bearer ${token}` },
-  //       }
-  //     );
-  //     setConversations(response.data.result || []);
-  //   } catch (err) {
-  //     console.error("Error fetching conversations:", err);
-  //   }
-  // };
   const fetchConversations = async () => {
     if (!loggedInUser?.id) return;
 
@@ -117,7 +103,8 @@ const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
       );
       // alert('Conversation created successfully!');
       setSearchResults([]);
-      fetchConversations(loggedInUser.id);
+      // fetchConversations(loggedInUser.id);
+      fetchConversations();
     } catch (err) {
       console.error(err);
       // alert('Failed to start conversation');
@@ -134,7 +121,7 @@ const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
       <Navbar bg="dark" variant="dark" expand="lg" className="px-3 fixed-top">
         <Container fluid>
           <Button variant="outline-light" onClick={toggleSidebar} className="me-2">☰</Button>
-          <Navbar.Brand as={Link} to="/home">ChatApp</Navbar.Brand>
+          <Navbar.Brand as={Link} to="/home">Ws Chat</Navbar.Brand>
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse id="navbarScroll">
             <Nav className="ms-auto align-items-center">
@@ -144,6 +131,7 @@ const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
                 </Navbar.Text>
               )}
               <Nav.Link as={Link} to="/home/chat">Chat</Nav.Link>
+
               <Nav.Link as={Link} to="/home">Home</Nav.Link>
               <Nav.Link as={Link} to="/">Logout</Nav.Link>
             </Nav>
@@ -158,7 +146,7 @@ const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
             <Col
               md={2}
               className="bg-light p-2 vh-100"
-              style={{ position: 'fixed', top: '56px', width: '250px', left: 0, overflowY: 'auto' }}
+              style={{ position: 'fixed', top: '56px', width: '250px', left: 0, overflowY: 'auto',  zIndex: 1050, }}
             >
               <ListGroup variant="flush">
                 <ListGroup.Item action as={Link} to="/home">Dashboard</ListGroup.Item>
@@ -207,14 +195,15 @@ const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
             <ListGroup className="mb-4">
         {conversations.map((conv) => {
           const otherUser = conv.userBy._id === loggedInUser.id ? conv.userTo : conv.userBy;
- console.log("avtar urls",otherUser.avatarUrl)
           return (
             <ListGroup.Item
-              key={conv._id}
-              className="d-flex justify-content-between align-items-center border-0 shadow-sm"
-              onClick={() => navigate(`chat/${conv._id}`)}
-              href="" 
-            >
+      key={conv._id}
+      className="d-flex justify-content-between align-items-center border-0 shadow-sm"
+      onClick={() => {
+        navigate(`chat/${conv._id}`);
+        toggleSidebar(); 
+      }}
+    >
                <img
     src={otherUser.avatarUrl || otherUser.avatar} 
 
