@@ -57,9 +57,7 @@ const messagesContainerRef = useRef(null)
         setReceiverName(
           otherMessage?.createdBy?.name || otherMessage?.createdBy?.email || 'Unknown'
         );
-        setReceiveravtarURL(
-          otherMessage?.createdBy?.avatarUrl || otherMessage?.createdBy?.email || 'Unknown'
-        );
+        
 
         setMessages(messagesFetched);
       })
@@ -381,16 +379,16 @@ const messagesContainerRef = useRef(null)
 
 
 
-<Container fluid className="p-0 chat-container" style={{ height: 'calc(100vh - 56px)' }}>
-  <Card className="border-0 shadow-sm w-100 h-100 rounded-0 d-flex mt-5 flex-column fixed-top">
+<Container fluid className="p-0 chat-container" style={{ height: 'calc(100vh - 76px)' }}>
+  <Card className="border-0 shadow-sm w-100 h-100 rounded-0 d-flex flex-column fixed-top mt-5">
     {/* Header */}
     <Card.Header
       className="text-dark shadow-sm border-0"
-      style={{ backgroundColor: 'rgba(179, 206, 246, 0.2)', height: '60px' }}
+      style={{ backgroundColor: 'rgba(179, 206, 246, 0.2)', height: '56px' }}
     >
       <div className="d-flex justify-content-between align-items-center h-100">
         <div className="d-flex align-items-center gap-2">
-          <img
+          {/* <img
             src={receiveravtarURL || 'https://via.placeholder.com/40'}
             alt={receiverName}
             style={{
@@ -399,7 +397,7 @@ const messagesContainerRef = useRef(null)
               borderRadius: '50%',
               objectFit: 'cover',
             }}
-          />
+          /> */}
           <h6 className="mb-0">{receiverName}</h6>
         </div>
         <div className="d-flex align-items-center gap-3">
@@ -411,7 +409,7 @@ const messagesContainerRef = useRef(null)
     </Card.Header>
 
     {/* Body */}
-    <Card.Body className="d-flex flex-column p-0" style={{ height: 'calc(100% - 60px)' }}>
+    <Card.Body className="d-flex flex-column p-0" style={{ height: 'calc(100% - 56px)' }}>
       {/* Messages */}
       <div className="flex-grow-1 overflow-auto p-3" ref={messagesContainerRef}>
         {messages.length === 0 ? (
@@ -499,6 +497,7 @@ const messagesContainerRef = useRef(null)
     </Card.Body>
   </Card>
 </Container>
+
 
 
 
