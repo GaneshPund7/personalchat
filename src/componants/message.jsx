@@ -11,7 +11,7 @@ function Message() {
   const [messages, setMessages] = useState([]);
   const [receiverName, setReceiverName] = useState('');
   const [receiveravtarURL, setReceiveravtarURL] = useState('');
-  
+  console.log(receiveravtarURL)
   const messageRef = useRef(null);
   const messagesEndRef = useRef(null);
   // const messagesEndRef = useRef(null);
@@ -381,29 +381,28 @@ const messagesContainerRef = useRef(null)
 
 
 
-<Container fluid className="p-0 chat-container mt-2" style={{ height: '100vh' }}>
+ <Container fluid className="p-0 chat-container" style={{ height: '100vh' }}>
   <Card className="border-0 shadow-sm w-100 h-100 rounded-0 d-flex flex-column">
+    {/* Header */}
     <Card.Header
       className="text-dark shadow-sm border-0"
-      style={{ backgroundColor: 'rgba(179, 206, 246, 0.2)' }}
+      style={{ backgroundColor: 'rgba(179, 206, 246, 0.2)', height: '60px' }}
     >
-      <div className="d-flex justify-content-between align-items-center flex-wrap">
-       
-          <div className="d-flex align-items-center gap-2">
-      <img
-        src={receiveravtarURL || 'https://via.placeholder.com/40'} // fallback if no avatar provided
-        alt={receiverName}
-        style={{
-          width: '36px',
-          height: '36px',
-          borderRadius: '50%',
-          objectFit: 'cover',
-        }}
-      />
-      <h5 className="mb-0">{receiverName}</h5>
-    </div>
-        {/* <h5 className="mb-0">{receiverName}</h5> */}
-        <div className="d-flex align-items-center gap-3 mt-2 mt-md-0">
+      <div className="d-flex justify-content-between align-items-center h-100">
+        <div className="d-flex align-items-center gap-2">
+          <img
+            src={receiveravtarURL || 'https://via.placeholder.com/40'}
+            alt={receiverName}
+            style={{
+              width: '36px',
+              height: '36px',
+              borderRadius: '50%',
+              objectFit: 'cover',
+            }}
+          />
+          <h6 className="mb-0">{receiverName}</h6>
+        </div>
+        <div className="d-flex align-items-center gap-3">
           <i className="fa fa-phone"></i>
           <i className="fa fa-video-camera"></i>
           <i className="fa fa-ellipsis-v"></i>
@@ -411,9 +410,14 @@ const messagesContainerRef = useRef(null)
       </div>
     </Card.Header>
 
-    <Card.Body className="d-flex flex-column p-0 position-relative">
-      {/* Messages */}
-      <div className="chat-messages flex-grow-1 overflow-auto p-3" ref={messagesContainerRef}>
+    {/* Body */}
+    <Card.Body className="d-flex flex-column p-0" style={{ overflow: 'hidden' }}>
+      {/* Messages list */}
+      <div
+        className="flex-grow-1 overflow-auto p-3"
+        ref={messagesContainerRef}
+        style={{ marginBottom: '65px' }}  // reserve space for input
+      >
         {messages.length === 0 ? (
           <div className="text-muted text-center mt-5">
             No messages yet — start the conversation!
@@ -431,7 +435,7 @@ const messagesContainerRef = useRef(null)
                   isSentByCurrentUser ? 'align-items-end text-end' : 'align-items-start text-start'
                 }`}
               >
-                <div className="d-flex align-items-center">
+                <div>
                   <small className="text-muted">{formatDate(msg.createdAt)}</small>
                 </div>
                 <span
@@ -453,7 +457,7 @@ const messagesContainerRef = useRef(null)
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Scroll to bottom button */}
+      {/* Scroll-to-bottom button */}
       <Button
         variant="light"
         className="position-absolute"
@@ -462,15 +466,20 @@ const messagesContainerRef = useRef(null)
           right: '20px',
           borderRadius: '50%',
           boxShadow: '0 0 5px rgba(0,0,0,0.2)',
+          zIndex: 10,
         }}
         onClick={scrollToBottom}
       >
-        <i className="fa fa-arrow-down" aria-hidden="true"></i>
+        <i className="fa fa-arrow-down"></i>
       </Button>
 
-      {/* Message Input */}
-      <Form onSubmit={handleSend} className="p-3 border-top">
-        <Form.Group className="d-flex">
+      {/* Input */}
+      <Form
+        onSubmit={handleSend}
+        className="position-absolute w-100 px-3 py-2"
+        style={{ bottom: 0, left: 0, background: '#fff', borderTop: '1px solid #ddd' }}
+      >
+        <Form.Group className="d-flex m-0">
           <InputGroup>
             <Form.Control
               type="text"
@@ -481,19 +490,20 @@ const messagesContainerRef = useRef(null)
             />
             <InputGroup.Text style={{ background: 'white', borderLeft: '0' }}>
               <label htmlFor="fileInput" className="m-0" style={{ cursor: 'pointer' }}>
-                <i className="fa fa-paperclip" aria-hidden="true"></i>
+                <i className="fa fa-paperclip"></i>
               </label>
               <input type="file" id="fileInput" style={{ display: 'none' }} />
             </InputGroup.Text>
           </InputGroup>
           <Button type="submit" className="ms-2">
-            <i className="fa fa-paper-plane" aria-hidden="true"></i>
+            <i className="fa fa-paper-plane"></i>
           </Button>
         </Form.Group>
       </Form>
     </Card.Body>
   </Card>
 </Container>
+
 
 
 
