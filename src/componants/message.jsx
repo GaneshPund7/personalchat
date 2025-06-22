@@ -48,15 +48,14 @@ const messagesContainerRef = useRef(null)
       .then(res => res.json())
       .then(result => {
         const messagesFetched = Array.isArray(result.data) ? result.data : [];
-
+        console.log("message result", messagesFetched)
         // Identify the other participant's name/email
         const otherMessage = messagesFetched.find(
           msg => msg.createdBy._id !== loggedInUser.id
         );
-        console.log("otherMessage",otherMessage)
 
         setReceiverName(
-          otherMessage?.createdBy?.avatarUrl || otherMessage?.createdBy?.email || 'Unknown'
+          otherMessage?.createdBy?.name || otherMessage?.createdBy?.email || 'Unknown'
         );
         setReceiveravtarURL(
           otherMessage?.createdBy?.avatarUrl || otherMessage?.createdBy?.email || 'Unknown'
@@ -383,10 +382,10 @@ const messagesContainerRef = useRef(null)
 
 
 <Container fluid className="p-0 chat-container" style={{ height: 'calc(100vh - 56px)' }}>
-  <Card className="border-0 shadow-sm w-100 h-100 rounded-0 d-flex flex-column">
+  <Card className="border-0 shadow-sm w-100 h-100 rounded-0 d-flex mt-5 flex-column fixed-top">
     {/* Header */}
     <Card.Header
-      className="text-dark shadow-sm border-0 mt-5"
+      className="text-dark shadow-sm border-0"
       style={{ backgroundColor: 'rgba(179, 206, 246, 0.2)', height: '60px' }}
     >
       <div className="d-flex justify-content-between align-items-center h-100">
