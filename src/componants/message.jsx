@@ -189,7 +189,7 @@ function Message() {
 // </Container>
 
   <Container fluid className="p-0 chat-container">
-      <Card className="border-0 shadow-sm w-100 h-100 rounded-0 mt-5">
+      <Card className="border-0 shadow-sm w-100 h-100 rounded-0 mt-5 fixed-top">
         <Card.Header
           className="text-dark shadow-sm border-0"
           style={{ backgroundColor: 'rgba(179, 206, 246, 0.2)' }}
