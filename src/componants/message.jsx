@@ -11,7 +11,7 @@ function Message() {
   const [messages, setMessages] = useState([]);
   const [receiverName, setReceiverName] = useState('');
   const [receiveravtarURL, setReceiveravtarURL] = useState('');
-  console.log("message url img",receiveravtarURL)
+  console.log("message url img",receiverName)
   const messageRef = useRef(null);
   const messagesEndRef = useRef(null);
   // const messagesEndRef = useRef(null);
@@ -385,7 +385,7 @@ const messagesContainerRef = useRef(null)
   <Card className="border-0 shadow-sm w-100 h-100 rounded-0 d-flex flex-column">
     {/* Header */}
     <Card.Header
-      className="text-dark shadow-sm border-0"
+      className="text-dark shadow-sm border-0 mt-3"
       style={{ backgroundColor: 'rgba(179, 206, 246, 0.2)', height: '60px' }}
     >
       <div className="d-flex justify-content-between align-items-center h-100">
