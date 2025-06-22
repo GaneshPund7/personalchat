@@ -11,7 +11,7 @@ function Message() {
   const [messages, setMessages] = useState([]);
   const [receiverName, setReceiverName] = useState('');
   const [receiveravtarURL, setReceiveravtarURL] = useState('');
-  console.log(receiveravtarURL)
+  console.log("message url img",receiveravtarURL)
   const messageRef = useRef(null);
   const messagesEndRef = useRef(null);
   // const messagesEndRef = useRef(null);
@@ -381,7 +381,7 @@ const messagesContainerRef = useRef(null)
 
 
 
- <Container fluid className="p-0 chat-container" style={{ height: '100vh' }}>
+<Container fluid className="p-0 chat-container" style={{ height: 'calc(100vh - 56px)' }}>
   <Card className="border-0 shadow-sm w-100 h-100 rounded-0 d-flex flex-column">
     {/* Header */}
     <Card.Header
@@ -411,13 +411,9 @@ const messagesContainerRef = useRef(null)
     </Card.Header>
 
     {/* Body */}
-    <Card.Body className="d-flex flex-column p-0" style={{ overflow: 'hidden' }}>
-      {/* Messages list */}
-      <div
-        className="flex-grow-1 overflow-auto p-3"
-        ref={messagesContainerRef}
-        style={{ marginBottom: '65px' }}  // reserve space for input
-      >
+    <Card.Body className="d-flex flex-column p-0" style={{ height: 'calc(100% - 60px)' }}>
+      {/* Messages */}
+      <div className="flex-grow-1 overflow-auto p-3" ref={messagesContainerRef}>
         {messages.length === 0 ? (
           <div className="text-muted text-center mt-5">
             No messages yet — start the conversation!
@@ -476,8 +472,8 @@ const messagesContainerRef = useRef(null)
       {/* Input */}
       <Form
         onSubmit={handleSend}
-        className="position-absolute w-100 px-3 py-2"
-        style={{ bottom: 0, left: 0, background: '#fff', borderTop: '1px solid #ddd' }}
+        className="w-100 p-2"
+        style={{ borderTop: '1px solid #ddd', background: '#fff' }}
       >
         <Form.Group className="d-flex m-0">
           <InputGroup>
@@ -503,6 +499,7 @@ const messagesContainerRef = useRef(null)
     </Card.Body>
   </Card>
 </Container>
+
 
 
 
