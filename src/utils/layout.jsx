@@ -132,9 +132,9 @@ const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
       {/* Top Navbar */}
       <Navbar bg="dark" variant="dark" expand="lg" className="px-3 fixed-top">
         <Container fluid>
-          <Button variant="outline-light" onClick={toggleSidebar} className="me-2">☰</Button>
           <Navbar.Brand as={Link} to="/home">Ws Chat</Navbar.Brand>
-          <Navbar.Toggle aria-controls="navbarScroll" />
+          <Button variant="outline-light" onClick={toggleSidebar} className="me-2">☰</Button>
+          {/* <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse id="navbarScroll">
             <Nav className="ms-auto align-items-center">
               {currentUser && (
@@ -147,7 +147,7 @@ const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
               <Nav.Link as={Link} to="/home">Home</Nav.Link>
               <Nav.Link as={Link} to="/">Logout</Nav.Link>
             </Nav>
-          </Navbar.Collapse>
+          </Navbar.Collapse> */}
         </Container>
       </Navbar>
 
