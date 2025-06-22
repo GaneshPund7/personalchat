@@ -10,6 +10,10 @@ function Layout() {
   const [searchResults, setSearchResults] = useState([]);
   const [activeChats, setActiveChats] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
+  const [searching, setSearching] = useState(false);
+  const [chattingUserId, setChattingUserId] = useState(null);
+
+
   const navigate = useNavigate();
   // Conversations and userTo details for conversations
   const [conversations, setConversations] = useState([]);
@@ -75,6 +79,7 @@ const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
   const handleSearch = async (e) => {
     e.preventDefault();
     if (!searchQuery.trim()) return;
+    setSearching(true);
 
     try {
       const response = await axios.get(
@@ -86,9 +91,13 @@ const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
       alert("User not found");
       setSearchResults([]);
     }
+    finally {
+    setSearching(false);
+  }
   };
 
   const startConversation = async (userToId) => {
+      setChattingUserId(userToId);
     try {
       const loggedInUser = currentUser;
       await axios.post(
@@ -109,6 +118,9 @@ const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
       console.error(err);
       // alert('Failed to start conversation');
     }
+    finally {
+    setChattingUserId(null);
+  }
   };
 
   const handleRemoveChat = (email) => {
@@ -163,9 +175,29 @@ const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
                     className='shadow-sm'
                   />
                 </Form.Group>
-                <Button variant="primary" type="submit" className="mt-2 w-100 shadow-sm">
-                  Search
-                </Button>
+            <Button
+  variant="primary"
+  type="submit"
+  className="mt-2 w-100 shadow-sm d-flex align-items-center justify-content-center"
+  disabled={searching}
+>
+  {searching ? (
+    <>
+      <Spinner
+        as="span"
+        animation="border"
+        size="sm"
+        role="status"
+        aria-hidden="true"
+        className="me-2"
+      />
+      Searching...
+    </>
+  ) : (
+    'Search'
+  )}
+</Button>
+
               </Form>
 
               {/* Show Search Results OR Conversations */}
@@ -179,9 +211,30 @@ const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
                         className="d-flex justify-content-between align-items-center"
                       >
                         {user.name}
-                        <Button size="sm" variant="success" onClick={() => startConversation(user._id)}>
+                        {/* <Button size="sm" variant="success" onClick={() => startConversation(user._id)}>
                           Chat
                         </Button>
+         */}
+         <Button
+  size="sm"
+  variant="success"
+  onClick={() => startConversation(user._id)}
+  disabled={chattingUserId === user._id}
+>
+  {chattingUserId === user._id ? (
+    <Spinner
+      as="span"
+      animation="border"
+      size="sm"
+      role="status"
+      aria-hidden="true"
+    />
+  ) : (
+    'Chat'
+  )}
+</Button>
+
+
                       </ListGroup.Item>
                     ))}
                   </ListGroup>

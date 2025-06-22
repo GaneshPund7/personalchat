@@ -164,7 +164,7 @@ const Login = () => {
       localStorage.setItem("loggedInUser", JSON.stringify(response.data.user));
       localStorage.setItem("authToken", response.data.token);
 
-      alert("Login successful via Google!");
+      // alert("Login successful via Google!");
       window.location.href = "/home";
     })
     .catch(err => {
