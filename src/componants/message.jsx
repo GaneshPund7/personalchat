@@ -53,9 +53,10 @@ const messagesContainerRef = useRef(null)
         const otherMessage = messagesFetched.find(
           msg => msg.createdBy._id !== loggedInUser.id
         );
+        console.log("otherMessage",otherMessage)
 
         setReceiverName(
-          otherMessage?.createdBy?.name || otherMessage?.createdBy?.email || 'Unknown'
+          otherMessage?.createdBy?.avatarUrl || otherMessage?.createdBy?.email || 'Unknown'
         );
         setReceiveravtarURL(
           otherMessage?.createdBy?.avatarUrl || otherMessage?.createdBy?.email || 'Unknown'
@@ -385,7 +386,7 @@ const messagesContainerRef = useRef(null)
   <Card className="border-0 shadow-sm w-100 h-100 rounded-0 d-flex flex-column">
     {/* Header */}
     <Card.Header
-      className="text-dark shadow-sm border-0 mt-3"
+      className="text-dark shadow-sm border-0 mt-5"
       style={{ backgroundColor: 'rgba(179, 206, 246, 0.2)', height: '60px' }}
     >
       <div className="d-flex justify-content-between align-items-center h-100">
