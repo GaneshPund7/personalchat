@@ -134,20 +134,7 @@ const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
         <Container fluid>
           <Navbar.Brand as={Link} to="/home">Ws Chat</Navbar.Brand>
           <Button variant="outline-light" onClick={toggleSidebar} className="me-2">☰</Button>
-          {/* <Navbar.Toggle aria-controls="navbarScroll" />
-          <Navbar.Collapse id="navbarScroll">
-            <Nav className="ms-auto align-items-center">
-              {currentUser && (
-                <Navbar.Text className="me-3">
-                  Signed in as: <strong>{currentUser.name}</strong>
-                </Navbar.Text>
-              )}
-              <Nav.Link as={Link} to="/home/chat">Chat</Nav.Link>
-
-              <Nav.Link as={Link} to="/home">Home</Nav.Link>
-              <Nav.Link as={Link} to="/">Logout</Nav.Link>
-            </Nav>
-          </Navbar.Collapse> */}
+       
         </Container>
       </Navbar>
 
@@ -155,11 +142,20 @@ const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
       <Container fluid>
         <Row>
           {showSidebar && (
-            <Col
-              md={2}
-              className="bg-light p-2 vh-100"
-              style={{ position: 'fixed', top: '56px', width: '100vh', left: 0, overflowY: 'auto',  zIndex: 1050, }}
-            >
+          <Col
+  md={3} 
+  xs={10}  
+  className="bg-light p-2 vh-100"
+  style={{
+    position: 'fixed',
+    top: '56px',
+    left: 0,
+    overflowY: 'auto',
+    zIndex: 1050,
+    width: '250px',  // default
+  }}
+>
+
               <ListGroup variant="flush">
                 <ListGroup.Item action as={Link} to="/home">Dashboard</ListGroup.Item>
               </ListGroup>

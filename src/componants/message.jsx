@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { io } from 'socket.io-client';
 import { useParams } from 'react-router-dom';
 import { Card, ListGroup, Form, Button, Container, InputGroup } from 'react-bootstrap';
+import './message.css';
 
 const socket = io('https://socketchatnode-1.onrender.com');
 
@@ -98,94 +99,182 @@ function Message() {
   };
 
   return (
-    <Container fluid className="p-0" style={{ height: '100vh' }}>
-  <Card className="border-0 shadow-sm w-100 h-100 rounded-0 mt-5">
-    <Card.Header
-      className="text-dark shadow-sm border-0"
-      style={{ backgroundColor: 'rgba(179, 206, 246, 0.2)' }}
-    >
-      <div className="d-flex justify-content-between align-items-center flex-wrap">
-        <h5 className="mb-0">{receiverName}</h5>
-        <div className="d-flex align-items-center gap-3 mt-2 mt-md-0">
-          <i className="fa fa-phone"></i>
-          <i className="fa fa-video-camera"></i>
-          <i className="fa fa-ellipsis-v"></i>
-        </div>
-      </div>
-    </Card.Header>
+//     <Container fluid className="p-0" style={{ height: '100vh' }}>
+//   <Card className="border-0 shadow-sm w-100 h-100 rounded-0 mt-5">
+//     <Card.Header
+//       className="text-dark shadow-sm border-0"
+//       style={{ backgroundColor: 'rgba(179, 206, 246, 0.2)' }}
+//     >
+//       <div className="d-flex justify-content-between align-items-center flex-wrap">
+//         <h5 className="mb-0">{receiverName}</h5>
+//         <div className="d-flex align-items-center gap-3 mt-2 mt-md-0">
+//           <i className="fa fa-phone"></i>
+//           <i className="fa fa-video-camera"></i>
+//           <i className="fa fa-ellipsis-v"></i>
+//         </div>
+//       </div>
+//     </Card.Header>
 
-    <Card.Body className="d-flex flex-column p-0" style={{ height: 'calc(100vh - 56px)' }}>
-      {/* Messages area */}
-      <div style={{ flex: 1, overflowY: 'auto', padding: '16px' }}>
-        {messages.length === 0 ? (
-          <div className="text-muted text-center mt-5">
-            No messages yet — start the conversation!
+//     <Card.Body className="d-flex flex-column p-0" style={{ height: 'calc(100vh - 56px)' }}>
+//       {/* Messages area */}
+//       <div style={{ flex: 1, overflowY: 'auto', padding: '16px' }}>
+//         {messages.length === 0 ? (
+//           <div className="text-muted text-center mt-5">
+//             No messages yet — start the conversation!
+//           </div>
+//         ) : (
+//           messages.map((msg, idx) => {
+//             const isSentByCurrentUser =
+//               msg.createdBy?.email === loggedInUser.email ||
+//               msg.createdBy?.name === loggedInUser.name;
+
+//             return (
+//               <div
+//                 key={idx}
+//                 className={`mb-2 d-flex flex-column ${
+//                   isSentByCurrentUser ? 'align-items-end text-end' : 'align-items-start text-start'
+//                 }`}
+//               >
+//                 <div className="d-flex align-items-center">
+//                   <small className="text-muted">{formatDate(msg.createdAt)}</small>
+//                 </div>
+//                 <span
+//                   className={`mt-1 rounded-3 border-0 shadow-sm p-3 ${
+//                     isSentByCurrentUser ? '' : 'bg-light text-dark'
+//                   }`}
+//                   style={
+//                     isSentByCurrentUser
+//                       ? { backgroundColor: 'rgba(133, 221, 250, 0.2)' }
+//                       : undefined
+//                   }
+//                 >
+//                   {msg.content || msg.message}
+//                 </span>
+//               </div>
+//             );
+//           })
+//         )}
+//         <div ref={messagesEndRef} />
+//       </div>
+
+//       {/* Message input area */}
+//      <Form onSubmit={handleSend}>
+//   <Form.Group className="d-flex">
+//     <InputGroup>
+//       <Form.Control
+//         type="text"
+//         ref={messageRef}
+//         placeholder="Type a message"
+//         required
+//         autoComplete="off"
+//       />
+//       {/* Paperclip icon inside input */}
+//       <InputGroup.Text style={{ background: 'white', borderLeft: '0' }}>
+//         <label htmlFor="fileInput" className="m-0" style={{ cursor: 'pointer' }}>
+//           <i className="fa fa-paperclip" aria-hidden="true"></i>
+//         </label>
+//         <input type="file" id="fileInput" style={{ display: 'none' }} />
+//       </InputGroup.Text>
+//     </InputGroup>
+
+//     {/* Send button */}
+//     <Button type="submit" className="ms-2">
+//       <i className="fa fa-paper-plane" aria-hidden="true"></i>
+//     </Button>
+//   </Form.Group>
+// </Form>
+
+//     </Card.Body>
+//   </Card>
+// </Container>
+
+  <Container fluid className="p-0 chat-container">
+      <Card className="border-0 shadow-sm w-100 h-100 rounded-0 mt-5">
+        <Card.Header
+          className="text-dark shadow-sm border-0"
+          style={{ backgroundColor: 'rgba(179, 206, 246, 0.2)' }}
+        >
+          <div className="d-flex justify-content-between align-items-center flex-wrap">
+            <h5 className="mb-0">{receiverName}</h5>
+            <div className="d-flex align-items-center gap-3 mt-2 mt-md-0">
+              <i className="fa fa-phone"></i>
+              <i className="fa fa-video-camera"></i>
+              <i className="fa fa-ellipsis-v"></i>
+            </div>
           </div>
-        ) : (
-          messages.map((msg, idx) => {
-            const isSentByCurrentUser =
-              msg.createdBy?.email === loggedInUser.email ||
-              msg.createdBy?.name === loggedInUser.name;
+        </Card.Header>
 
-            return (
-              <div
-                key={idx}
-                className={`mb-2 d-flex flex-column ${
-                  isSentByCurrentUser ? 'align-items-end text-end' : 'align-items-start text-start'
-                }`}
-              >
-                <div className="d-flex align-items-center">
-                  <small className="text-muted">{formatDate(msg.createdAt)}</small>
-                </div>
-                <span
-                  className={`mt-1 rounded-3 border-0 shadow-sm p-3 ${
-                    isSentByCurrentUser ? '' : 'bg-light text-dark'
-                  }`}
-                  style={
-                    isSentByCurrentUser
-                      ? { backgroundColor: 'rgba(133, 221, 250, 0.2)' }
-                      : undefined
-                  }
-                >
-                  {msg.content || msg.message}
-                </span>
+        <Card.Body className="d-flex flex-column p-0 chat-body">
+          {/* Messages */}
+          <div className="chat-messages">
+            {messages.length === 0 ? (
+              <div className="text-muted text-center mt-5">
+                No messages yet — start the conversation!
               </div>
-            );
-          })
-        )}
-        <div ref={messagesEndRef} />
-      </div>
+            ) : (
+              messages.map((msg, idx) => {
+                const isSentByCurrentUser =
+                  msg.createdBy?.email === loggedInUser.email ||
+                  msg.createdBy?.name === loggedInUser.name;
 
-      {/* Message input area */}
-     <Form onSubmit={handleSend}>
-  <Form.Group className="d-flex">
-    <InputGroup>
-      <Form.Control
-        type="text"
-        ref={messageRef}
-        placeholder="Type a message"
-        required
-        autoComplete="off"
-      />
-      {/* Paperclip icon inside input */}
-      <InputGroup.Text style={{ background: 'white', borderLeft: '0' }}>
-        <label htmlFor="fileInput" className="m-0" style={{ cursor: 'pointer' }}>
-          <i className="fa fa-paperclip" aria-hidden="true"></i>
-        </label>
-        <input type="file" id="fileInput" style={{ display: 'none' }} />
-      </InputGroup.Text>
-    </InputGroup>
+                return (
+                  <div
+                    key={idx}
+                    className={`mb-2 d-flex flex-column ${
+                      isSentByCurrentUser
+                        ? 'align-items-end text-end'
+                        : 'align-items-start text-start'
+                    }`}
+                  >
+                    <div className="d-flex align-items-center">
+                      <small className="text-muted">{formatDate(msg.createdAt)}</small>
+                    </div>
+                    <span
+                      className={`mt-1 rounded-3 border-0 shadow-sm p-3 ${
+                        isSentByCurrentUser ? '' : 'bg-light text-dark'
+                      }`}
+                      style={
+                        isSentByCurrentUser
+                          ? { backgroundColor: 'rgba(133, 221, 250, 0.2)' }
+                          : undefined
+                      }
+                    >
+                      {msg.content || msg.message}
+                    </span>
+                  </div>
+                );
+              })
+            )}
+            <div ref={messagesEndRef} />
+          </div>
 
-    {/* Send button */}
-    <Button type="submit" className="ms-2">
-      <i className="fa fa-paper-plane" aria-hidden="true"></i>
-    </Button>
-  </Form.Group>
-</Form>
+          {/* Message Input */}
+          <Form onSubmit={handleSend} className="message-input-form">
+            <Form.Group className="d-flex">
+              <InputGroup>
+                <Form.Control
+                  type="text"
+                  ref={messageRef}
+                  placeholder="Type a message"
+                  required
+                  autoComplete="off"
+                />
+                <InputGroup.Text style={{ background: 'white', borderLeft: '0' }}>
+                  <label htmlFor="fileInput" className="m-0" style={{ cursor: 'pointer' }}>
+                    <i className="fa fa-paperclip" aria-hidden="true"></i>
+                  </label>
+                  <input type="file" id="fileInput" style={{ display: 'none' }} />
+                </InputGroup.Text>
+              </InputGroup>
+              <Button type="submit" className="ms-2">
+                <i className="fa fa-paper-plane" aria-hidden="true"></i>
+              </Button>
+            </Form.Group>
+          </Form>
+        </Card.Body>
+      </Card>
+    </Container>
 
-    </Card.Body>
-  </Card>
-</Container>
 
 //     <Container style={{ maxWidth: '1000px' }}>
 //       <Card className="shadow-sm mt-5 border-0 w-100">
