@@ -380,7 +380,7 @@ const messagesContainerRef = useRef(null)
 
 
 <Container fluid className="p-0 chat-container" style={{ height: 'calc(100vh - 76px)' }}>
-  <Card className="border-0 shadow-sm w-100 h-75 rounded-0 d-flex flex-column fixed-top mt-5">
+  <Card className="border-0 shadow-sm w-100 h-100 rounded-0 d-flex flex-column  mt-5">
     {/* Header */}
     <Card.Header
       className="text-dark shadow-sm border-0"
