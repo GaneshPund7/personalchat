@@ -17,8 +17,8 @@ function Layout() {
   const navigate = useNavigate();
   // Conversations and userTo details for conversations
   const [conversations, setConversations] = useState([]);
-const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
-  console.log(conversations)
+  const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+  // console.log(conversations)
   const [conversationsUserTo, setConversationsUserTo] = useState([]);
 
   const token = localStorage.getItem('authToken');
@@ -67,7 +67,7 @@ const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
         }
       );
       setConversations(response.data.result);
-      
+
       // setConversationsUserTo(response.data.userTo);  
     } catch (err) {
       console.error('Error fetching conversations:', err);
@@ -92,12 +92,12 @@ const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
       setSearchResults([]);
     }
     finally {
-    setSearching(false);
-  }
+      setSearching(false);
+    }
   };
 
   const startConversation = async (userToId) => {
-      setChattingUserId(userToId);
+    setChattingUserId(userToId);
     try {
       const loggedInUser = currentUser;
       await axios.post(
@@ -119,8 +119,8 @@ const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
       // alert('Failed to start conversation');
     }
     finally {
-    setChattingUserId(null);
-  }
+      setChattingUserId(null);
+    }
   };
 
   const handleRemoveChat = (email) => {
@@ -134,7 +134,7 @@ const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
         <Container fluid>
           <Navbar.Brand as={Link} to="/home">Ws Chat</Navbar.Brand>
           <Button variant="outline-light" onClick={toggleSidebar} className="me-2">☰</Button>
-       
+
         </Container>
       </Navbar>
 
@@ -142,19 +142,19 @@ const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
       <Container fluid>
         <Row>
           {showSidebar && (
-          <Col
-  md={3} 
-  xs={10}  
-  className="bg-light p-2 vh-100"
-  style={{
-    position: 'fixed',
-    top: '56px',
-    left: 0,
-    overflowY: 'auto',
-    zIndex: 1050,
-    width: '250px',  // default
-  }}
->
+            <Col
+              md={3}
+              xs={10}
+              className="bg-light p-2 vh-100"
+              style={{
+                position: 'fixed',
+                top: '56px',
+                left: 0,
+                overflowY: 'auto',
+                zIndex: 1050,
+                width: '250px',  // default
+              }}
+            >
 
               <ListGroup variant="flush">
                 <ListGroup.Item action as={Link} to="/home">Dashboard</ListGroup.Item>
@@ -171,28 +171,28 @@ const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
                     className='shadow-sm'
                   />
                 </Form.Group>
-            <Button
-  variant="primary"
-  type="submit"
-  className="mt-2 w-100 shadow-sm d-flex align-items-center justify-content-center"
-  disabled={searching}
->
-  {searching ? (
-    <>
-      <Spinner
-        as="span"
-        animation="border"
-        size="sm"
-        role="status"
-        aria-hidden="true"
-        className="me-2"
-      />
-      Searching...
-    </>
-  ) : (
-    'Search'
-  )}
-</Button>
+                <Button
+                  variant="primary"
+                  type="submit"
+                  className="mt-2 w-100 shadow-sm d-flex align-items-center justify-content-center"
+                  disabled={searching}
+                >
+                  {searching ? (
+                    <>
+                      <Spinner
+                        as="span"
+                        animation="border"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                        className="me-2"
+                      />
+                      Searching...
+                    </>
+                  ) : (
+                    'Search'
+                  )}
+                </Button>
 
               </Form>
 
@@ -211,24 +211,24 @@ const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
                           Chat
                         </Button>
          */}
-         <Button
-  size="sm"
-  variant="success"
-  onClick={() => startConversation(user._id)}
-  disabled={chattingUserId === user._id}
->
-  {chattingUserId === user._id ? (
-    <Spinner
-      as="span"
-      animation="border"
-      size="sm"
-      role="status"
-      aria-hidden="true"
-    />
-  ) : (
-    'Chat'
-  )}
-</Button>
+                        <Button
+                          size="sm"
+                          variant="success"
+                          onClick={() => startConversation(user._id)}
+                          disabled={chattingUserId === user._id}
+                        >
+                          {chattingUserId === user._id ? (
+                            <Spinner
+                              as="span"
+                              animation="border"
+                              size="sm"
+                              role="status"
+                              aria-hidden="true"
+                            />
+                          ) : (
+                            'Chat'
+                          )}
+                        </Button>
 
 
                       </ListGroup.Item>
@@ -238,48 +238,48 @@ const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
               ) : (
                 <>
                   <h6 className="mt-4">Conversations: </h6>
-                   {conversations.length > 0 ? (
-        
-        <ul className="list-group">    
-            <ListGroup className="mb-4">
-        {conversations.map((conv) => {
-          const otherUser = conv.userBy._id === loggedInUser.id ? conv.userTo : conv.userBy;
-          return (
-            <ListGroup.Item
-      key={conv._id}
-      className="d-flex justify-content-between align-items-center border-0 shadow-sm"
-      onClick={() => {
-        navigate(`chat/${conv._id}`);
-        toggleSidebar(); 
-      }}
-    >
-               <img
-    src={otherUser.avatarUrl || otherUser.avatar} 
+                  {conversations.length > 0 ? (
 
-    alt={`${otherUser.name}`}
-    style={{
-      width: '30px',
-      height: '30px',
-      borderRadius: '50%',
-      objectFit: 'cover',
-      marginRight: '8px',
-    }}
-  />
-              <span className="me-3"><strong>{otherUser.name}</strong></span>
-              {/* <Button
+                    <ul className="list-group">
+                      <ListGroup className="mb-4">
+                        {conversations.map((conv) => {
+                          const otherUser = conv.userBy._id === loggedInUser.id ? conv.userTo : conv.userBy;
+                          return (
+                            <ListGroup.Item
+                              key={conv._id}
+                              className="d-flex justify-content-between align-items-center border-0 shadow-sm"
+                              onClick={() => {
+                                navigate(`chat/${conv._id}`);
+                                toggleSidebar();
+                              }}
+                            >
+                              <img
+                                src={otherUser.avatarUrl || otherUser.avatar}
+
+                                alt={`${otherUser.name}`}
+                                style={{
+                                  width: '30px',
+                                  height: '30px',
+                                  borderRadius: '50%',
+                                  objectFit: 'cover',
+                                  marginRight: '8px',
+                                }}
+                              />
+                              <span className="me-3"><strong>{otherUser.name}</strong></span>
+                              {/* <Button
                 size="sm"
                 variant="info" */}
-                 {/* > */}
-                 {/* Chat
+                              {/* > */}
+                              {/* Chat
               </Button> */}
-            </ListGroup.Item>
-          );
-        })}
-      </ListGroup>
-        </ul>
-      ) : (
-        <p>No conversations found.</p>
-      )}
+                            </ListGroup.Item>
+                          );
+                        })}
+                      </ListGroup>
+                    </ul>
+                  ) : (
+                    <p>No conversations found.</p>
+                  )}
                 </>
               )}
 

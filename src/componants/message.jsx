@@ -256,7 +256,7 @@ function Message() {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [showScrollButton, setShowScrollButton] = useState(false);
-
+console.log("Avtar Url :",receiverAvatarURL)
   const messageRef = useRef(null);
   const messagesEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
