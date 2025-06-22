@@ -10,10 +10,17 @@ function Message() {
   const { conversationId } = useParams();
   const [messages, setMessages] = useState([]);
   const [receiverName, setReceiverName] = useState('');
+  const [receiveravtarURL, setReceiveravtarURL] = useState('');
+  
   const messageRef = useRef(null);
   const messagesEndRef = useRef(null);
+  // const messagesEndRef = useRef(null);
+const messagesContainerRef = useRef(null)
   const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
 
+  const scrollToBottom = () => {
+  messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+};
   // Safe date formatting helper
   const formatDate = (dateString) => {
     if (!dateString) return '';
@@ -26,6 +33,9 @@ function Message() {
       minute: 'numeric',
     });
   };
+  useEffect(() => {
+  scrollToBottom();
+}, [messages]);
 
   useEffect(() => {
     if (!conversationId) return;
@@ -46,6 +56,9 @@ function Message() {
 
         setReceiverName(
           otherMessage?.createdBy?.name || otherMessage?.createdBy?.email || 'Unknown'
+        );
+        setReceiveravtarURL(
+          otherMessage?.createdBy?.avatarUrl || otherMessage?.createdBy?.email || 'Unknown'
         );
 
         setMessages(messagesFetched);
@@ -188,92 +201,92 @@ function Message() {
 //   </Card>
 // </Container>
 
-  <Container fluid className="p-0 chat-container">
-      <Card className="border-0 shadow-sm w-100 h-100 rounded-0 mt-5 fixed-top">
-        <Card.Header
-          className="text-dark shadow-sm border-0"
-          style={{ backgroundColor: 'rgba(179, 206, 246, 0.2)' }}
-        >
-          <div className="d-flex justify-content-between align-items-center flex-wrap">
-            <h5 className="mb-0">{receiverName}</h5>
-            <div className="d-flex align-items-center gap-3 mt-2 mt-md-0">
-              <i className="fa fa-phone"></i>
-              <i className="fa fa-video-camera"></i>
-              <i className="fa fa-ellipsis-v"></i>
-            </div>
-          </div>
-        </Card.Header>
+  // <Container fluid className="p-0 chat-container mt-2">
+  //     <Card className="border-0 shadow-sm w-100 h-100 rounded-0 mt-5 fixed-top">
+  //       <Card.Header
+  //         className="text-dark shadow-sm border-0"
+  //         style={{ backgroundColor: 'rgba(179, 206, 246, 0.2)' }}
+  //       >
+  //         <div className="d-flex justify-content-between align-items-center flex-wrap">
+  //           <h5 className="mb-0">{receiverName}</h5>
+  //           <div className="d-flex align-items-center gap-3 mt-2 mt-md-0">
+  //             <i className="fa fa-phone"></i>
+  //             <i className="fa fa-video-camera"></i>
+  //             <i className="fa fa-ellipsis-v"></i>
+  //           </div>
+  //         </div>
+  //       </Card.Header>
 
-        <Card.Body className="d-flex flex-column p-0 chat-body">
-          {/* Messages */}
-          <div className="chat-messages">
-            {messages.length === 0 ? (
-              <div className="text-muted text-center mt-5">
-                No messages yet — start the conversation!
-              </div>
-            ) : (
-              messages.map((msg, idx) => {
-                const isSentByCurrentUser =
-                  msg.createdBy?.email === loggedInUser.email ||
-                  msg.createdBy?.name === loggedInUser.name;
+  //       <Card.Body className="d-flex flex-column p-0 chat-body">
+  //         {/* Messages */}
+  //         <div className="chat-messages">
+  //           {messages.length === 0 ? (
+  //             <div className="text-muted text-center mt-5">
+  //               No messages yet — start the conversation!
+  //             </div>
+  //           ) : (
+  //             messages.map((msg, idx) => {
+  //               const isSentByCurrentUser =
+  //                 msg.createdBy?.email === loggedInUser.email ||
+  //                 msg.createdBy?.name === loggedInUser.name;
 
-                return (
-                  <div
-                    key={idx}
-                    className={`mb-2 d-flex flex-column ${
-                      isSentByCurrentUser
-                        ? 'align-items-end text-end'
-                        : 'align-items-start text-start'
-                    }`}
-                  >
-                    <div className="d-flex align-items-center">
-                      <small className="text-muted">{formatDate(msg.createdAt)}</small>
-                    </div>
-                    <span
-                      className={`mt-1 rounded-3 border-0 shadow-sm p-3 ${
-                        isSentByCurrentUser ? '' : 'bg-light text-dark'
-                      }`}
-                      style={
-                        isSentByCurrentUser
-                          ? { backgroundColor: 'rgba(133, 221, 250, 0.2)' }
-                          : undefined
-                      }
-                    >
-                      {msg.content || msg.message}
-                    </span>
-                  </div>
-                );
-              })
-            )}
-            <div ref={messagesEndRef} />
-          </div>
+  //               return (
+  //                 <div
+  //                   key={idx}
+  //                   className={`mb-2 d-flex flex-column ${
+  //                     isSentByCurrentUser
+  //                       ? 'align-items-end text-end'
+  //                       : 'align-items-start text-start'
+  //                   }`}
+  //                 >
+  //                   <div className="d-flex align-items-center">
+  //                     <small className="text-muted">{formatDate(msg.createdAt)}</small>
+  //                   </div>
+  //                   <span
+  //                     className={`mt-1 rounded-3 border-0 shadow-sm p-3 ${
+  //                       isSentByCurrentUser ? '' : 'bg-light text-dark'
+  //                     }`}
+  //                     style={
+  //                       isSentByCurrentUser
+  //                         ? { backgroundColor: 'rgba(133, 221, 250, 0.2)' }
+  //                         : undefined
+  //                     }
+  //                   >
+  //                     {msg.content || msg.message}
+  //                   </span>
+  //                 </div>
+  //               );
+  //             })
+  //           )}
+  //           <div ref={messagesEndRef} />
+  //         </div>
 
-          {/* Message Input */}
-          <Form onSubmit={handleSend} className="message-input-form">
-            <Form.Group className="d-flex">
-              <InputGroup>
-                <Form.Control
-                  type="text"
-                  ref={messageRef}
-                  placeholder="Type a message"
-                  required
-                  autoComplete="off"
-                />
-                <InputGroup.Text style={{ background: 'white', borderLeft: '0' }}>
-                  <label htmlFor="fileInput" className="m-0" style={{ cursor: 'pointer' }}>
-                    <i className="fa fa-paperclip" aria-hidden="true"></i>
-                  </label>
-                  <input type="file" id="fileInput" style={{ display: 'none' }} />
-                </InputGroup.Text>
-              </InputGroup>
-              <Button type="submit" className="ms-2">
-                <i className="fa fa-paper-plane" aria-hidden="true"></i>
-              </Button>
-            </Form.Group>
-          </Form>
-        </Card.Body>
-      </Card>
-    </Container>
+  //         {/* Message Input */}
+  //         <Form onSubmit={handleSend} className="message-input-form">
+  //           <Form.Group className="d-flex">
+  //             <InputGroup>
+  //               <Form.Control
+  //                 type="text"
+  //                 ref={messageRef}
+  //                 placeholder="Type a message"
+  //                 required
+  //                 autoComplete="off"
+  //               />
+  //               <InputGroup.Text style={{ background: 'white', borderLeft: '0' }}>
+  //                 <label htmlFor="fileInput" className="m-0" style={{ cursor: 'pointer' }}>
+  //                   <i className="fa fa-paperclip" aria-hidden="true"></i>
+  //                 </label>
+  //                 <input type="file" id="fileInput" style={{ display: 'none' }} />
+  //               </InputGroup.Text>
+  //             </InputGroup>
+  //             <Button type="submit" className="ms-2">
+  //               <i className="fa fa-paper-plane" aria-hidden="true"></i>
+  //             </Button>
+  //           </Form.Group>
+  //         </Form>
+  //       </Card.Body>
+  //     </Card>
+  //   </Container>
 
 
 //     <Container style={{ maxWidth: '1000px' }}>
@@ -362,6 +375,131 @@ function Message() {
 //         </Card.Body>
 //       </Card>
 //     </Container>
+
+
+
+
+
+
+<Container fluid className="p-0 chat-container mt-2" style={{ height: '100vh' }}>
+  <Card className="border-0 shadow-sm w-100 h-100 rounded-0 d-flex flex-column">
+    <Card.Header
+      className="text-dark shadow-sm border-0"
+      style={{ backgroundColor: 'rgba(179, 206, 246, 0.2)' }}
+    >
+      <div className="d-flex justify-content-between align-items-center flex-wrap">
+       
+          <div className="d-flex align-items-center gap-2">
+      <img
+        src={receiveravtarURL || 'https://via.placeholder.com/40'} // fallback if no avatar provided
+        alt={receiverName}
+        style={{
+          width: '36px',
+          height: '36px',
+          borderRadius: '50%',
+          objectFit: 'cover',
+        }}
+      />
+      <h5 className="mb-0">{receiverName}</h5>
+    </div>
+        {/* <h5 className="mb-0">{receiverName}</h5> */}
+        <div className="d-flex align-items-center gap-3 mt-2 mt-md-0">
+          <i className="fa fa-phone"></i>
+          <i className="fa fa-video-camera"></i>
+          <i className="fa fa-ellipsis-v"></i>
+        </div>
+      </div>
+    </Card.Header>
+
+    <Card.Body className="d-flex flex-column p-0 position-relative">
+      {/* Messages */}
+      <div className="chat-messages flex-grow-1 overflow-auto p-3" ref={messagesContainerRef}>
+        {messages.length === 0 ? (
+          <div className="text-muted text-center mt-5">
+            No messages yet — start the conversation!
+          </div>
+        ) : (
+          messages.map((msg, idx) => {
+            const isSentByCurrentUser =
+              msg.createdBy?.email === loggedInUser.email ||
+              msg.createdBy?.name === loggedInUser.name;
+
+            return (
+              <div
+                key={idx}
+                className={`mb-2 d-flex flex-column ${
+                  isSentByCurrentUser ? 'align-items-end text-end' : 'align-items-start text-start'
+                }`}
+              >
+                <div className="d-flex align-items-center">
+                  <small className="text-muted">{formatDate(msg.createdAt)}</small>
+                </div>
+                <span
+                  className={`mt-1 rounded-3 border-0 shadow-sm p-3 ${
+                    isSentByCurrentUser ? '' : 'bg-light text-dark'
+                  }`}
+                  style={
+                    isSentByCurrentUser
+                      ? { backgroundColor: 'rgba(133, 221, 250, 0.2)' }
+                      : undefined
+                  }
+                >
+                  {msg.content || msg.message}
+                </span>
+              </div>
+            );
+          })
+        )}
+        <div ref={messagesEndRef} />
+      </div>
+
+      {/* Scroll to bottom button */}
+      <Button
+        variant="light"
+        className="position-absolute"
+        style={{
+          bottom: '75px',
+          right: '20px',
+          borderRadius: '50%',
+          boxShadow: '0 0 5px rgba(0,0,0,0.2)',
+        }}
+        onClick={scrollToBottom}
+      >
+        <i className="fa fa-arrow-down" aria-hidden="true"></i>
+      </Button>
+
+      {/* Message Input */}
+      <Form onSubmit={handleSend} className="p-3 border-top">
+        <Form.Group className="d-flex">
+          <InputGroup>
+            <Form.Control
+              type="text"
+              ref={messageRef}
+              placeholder="Type a message"
+              required
+              autoComplete="off"
+            />
+            <InputGroup.Text style={{ background: 'white', borderLeft: '0' }}>
+              <label htmlFor="fileInput" className="m-0" style={{ cursor: 'pointer' }}>
+                <i className="fa fa-paperclip" aria-hidden="true"></i>
+              </label>
+              <input type="file" id="fileInput" style={{ display: 'none' }} />
+            </InputGroup.Text>
+          </InputGroup>
+          <Button type="submit" className="ms-2">
+            <i className="fa fa-paper-plane" aria-hidden="true"></i>
+          </Button>
+        </Form.Group>
+      </Form>
+    </Card.Body>
+  </Card>
+</Container>
+
+
+
+
+
+
   );
 }
 
