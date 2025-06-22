@@ -232,7 +232,6 @@
 // }
 
 // export default Message;
-
 import React, { useEffect, useState, useRef } from 'react';
 import { io } from 'socket.io-client';
 import { useParams } from 'react-router-dom';
@@ -256,10 +255,12 @@ function Message() {
   const [receiverAvatarURL, setReceiverAvatarURL] = useState('');
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
+  const [showScrollButton, setShowScrollButton] = useState(false);
 
   const messageRef = useRef(null);
   const messagesEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
+
   const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
 
   const scrollToBottom = () => {
@@ -277,10 +278,6 @@ function Message() {
       minute: 'numeric',
     });
   };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
 
   useEffect(() => {
     if (!conversationId) return;
@@ -304,6 +301,7 @@ function Message() {
         );
 
         setMessages(messagesFetched);
+        setTimeout(scrollToBottom, 100);
       })
       .catch((err) => {
         console.error('Error fetching messages:', err);
@@ -322,7 +320,7 @@ function Message() {
         },
       ]);
 
-      // Show toast notification for new message
+      // Toast for new incoming message if it's not you
       if (sender !== loggedInUser.name) {
         setToastMessage(`New message from ${sender}`);
         setShowToast(true);
@@ -333,6 +331,28 @@ function Message() {
       socket.off('receiveMessage');
     };
   }, [conversationId, loggedInUser.id, loggedInUser.name]);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  // Scroll button visibility handler
+  const handleScroll = () => {
+    const container = messagesContainerRef.current;
+    if (!container) return;
+    const atBottom =
+      container.scrollHeight - container.scrollTop - container.clientHeight < 50;
+    setShowScrollButton(!atBottom);
+  };
+
+  useEffect(() => {
+    const container = messagesContainerRef.current;
+    if (!container) return;
+    container.addEventListener('scroll', handleScroll);
+    return () => {
+      container.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   const handleSend = async (e) => {
     e.preventDefault();
@@ -396,7 +416,9 @@ function Message() {
                   <div
                     key={idx}
                     className={`mb-2 d-flex flex-column ${
-                      isSentByCurrentUser ? 'align-items-end text-end' : 'align-items-start text-start'
+                      isSentByCurrentUser
+                        ? 'align-items-end text-end'
+                        : 'align-items-start text-start'
                     }`}
                   >
                     <div>
@@ -422,20 +444,22 @@ function Message() {
           </div>
 
           {/* Scroll-to-bottom button */}
-          <Button
-            variant="light"
-            className="position-absolute"
-            style={{
-              bottom: '75px',
-              right: '20px',
-              borderRadius: '50%',
-              boxShadow: '0 0 5px rgba(0,0,0,0.2)',
-              zIndex: 10,
-            }}
-            onClick={scrollToBottom}
-          >
-            <i className="fa fa-arrow-down"></i>
-          </Button>
+          {showScrollButton && (
+            <Button
+              variant="light"
+              className="position-absolute"
+              style={{
+                bottom: '75px',
+                right: '20px',
+                borderRadius: '50%',
+                boxShadow: '0 0 5px rgba(0,0,0,0.2)',
+                zIndex: 10,
+              }}
+              onClick={scrollToBottom}
+            >
+              <i className="fa fa-arrow-down"></i>
+            </Button>
+          )}
 
           {/* Input */}
           <Form
