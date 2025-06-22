@@ -146,7 +146,7 @@ const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
             <Col
               md={2}
               className="bg-light p-2 vh-100"
-              style={{ position: 'fixed', top: '56px', width: '250px', left: 0, overflowY: 'auto',  zIndex: 1050, }}
+              style={{ position: 'fixed', top: '56px', width: '100vh', left: 0, overflowY: 'auto',  zIndex: 1050, }}
             >
               <ListGroup variant="flush">
                 <ListGroup.Item action as={Link} to="/home">Dashboard</ListGroup.Item>

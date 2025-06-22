@@ -99,7 +99,7 @@ function Message() {
 
   return (
     <Container fluid className="p-0" style={{ height: '100vh' }}>
-  <Card className="border-0 shadow-sm w-100 h-100 rounded-0">
+  <Card className="border-0 shadow-sm w-100 h-100 rounded-0 mt-5">
     <Card.Header
       className="text-dark shadow-sm border-0"
       style={{ backgroundColor: 'rgba(179, 206, 246, 0.2)' }}
@@ -157,20 +157,32 @@ function Message() {
       </div>
 
       {/* Message input area */}
-      <Form onSubmit={handleSend} className="border-top p-2">
-        <InputGroup>
-          <Form.Control
-            type="text"
-            ref={messageRef}
-            placeholder="Type a message"
-            required
-            autoComplete="off"
-          />
-          <Button type="submit">
-            <i className="fa fa-paper-plane" aria-hidden="true"></i>
-          </Button>
-        </InputGroup>
-      </Form>
+     <Form onSubmit={handleSend}>
+  <Form.Group className="d-flex">
+    <InputGroup>
+      <Form.Control
+        type="text"
+        ref={messageRef}
+        placeholder="Type a message"
+        required
+        autoComplete="off"
+      />
+      {/* Paperclip icon inside input */}
+      <InputGroup.Text style={{ background: 'white', borderLeft: '0' }}>
+        <label htmlFor="fileInput" className="m-0" style={{ cursor: 'pointer' }}>
+          <i className="fa fa-paperclip" aria-hidden="true"></i>
+        </label>
+        <input type="file" id="fileInput" style={{ display: 'none' }} />
+      </InputGroup.Text>
+    </InputGroup>
+
+    {/* Send button */}
+    <Button type="submit" className="ms-2">
+      <i className="fa fa-paper-plane" aria-hidden="true"></i>
+    </Button>
+  </Form.Group>
+</Form>
+
     </Card.Body>
   </Card>
 </Container>
