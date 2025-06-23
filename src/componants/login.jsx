@@ -87,14 +87,14 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("https://socketchatnode-1.onrender.com/sign-up/login", { email, password });
+      const response = await axios.post("http://localhost:3000sign-up/login", { email, password });
       
       // Store user email
       localStorage.setItem("loggedInUser", JSON.stringify({ email }));
 
-      alert("Login successful!");
+      // alert("Login successful!");
       console.log(response.data);
-      window.location.href = "/home";
+      // window.location.href = "/home";
     } catch (error) {
       console.error("Error logging in", error);
       alert("Login failed");
@@ -164,7 +164,7 @@ const Login = () => {
       localStorage.setItem("loggedInUser", JSON.stringify(response.data.user));
       localStorage.setItem("authToken", response.data.token);
 
-      // alert("Login successful via Google!");
+      alert("Login successful via Google!");
       window.location.href = "/home";
     })
     .catch(err => {
