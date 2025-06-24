@@ -12,7 +12,7 @@ import {
 } from 'react-bootstrap';
 import './message.css';
 
-const socket = io('http://localhost:3000');
+const socket = io('https://socketchatnode-1.onrender.com');
 
 function Message() {
   const { conversationId } = useParams();
@@ -50,7 +50,7 @@ console.log("Avtar Url :",receiverAvatarURL)
 
     socket.emit('join', { conversationId, userName: loggedInUser.name });
 
-    fetch(`http://localhost:3000/api/message/${conversationId}`)
+    fetch(`https://socketchatnode-1.onrender.com/api/message/${conversationId}`)
       .then((res) => res.json())
       .then((result) => {
         const messagesFetched = Array.isArray(result.data) ? result.data : [];
@@ -347,7 +347,7 @@ export default Message;
 
 //     socket.emit('join', { conversationId, userName: loggedInUser.name });
 
-//     fetch(`http://localhost:3000/api/message/${conversationId}`)
+//     fetch(`https://socketchatnode-1.onrender.com/api/message/${conversationId}`)
 //       .then((res) => res.json())
 //       .then((result) => {
 //         const messagesFetched = Array.isArray(result.data) ? result.data : [];
@@ -429,7 +429,7 @@ export default Message;
 //     if (selectedFile) formData.append('file', selectedFile);
 
 //     try {
-//       const res = await fetch('http://localhost:3000/api/message/send', {
+//       const res = await fetch('https://socketchatnode-1.onrender.com/api/message/send', {
 //         method: 'POST',
 //         body: formData,
 //       });
